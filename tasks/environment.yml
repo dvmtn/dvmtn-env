@@ -1,0 +1,37 @@
+#######################################################################
+# Check the Rails Evironment Variables are sourced for the deploy user
+#######################################################################
+- name: "Environment | Update /etc/default/{{app_name}}"
+  template: src=deploy_env.j2 dest=/etc/default/{{app_name}} owner=root group={{deploy_user}} mode=0440
+  when: dvmtn_deploy_extra_env is not defined
+
+- name: "Environment | Update /etc/default/dvmtn_common"
+  template: src=deploy_common_env.j2 dest=/etc/default/dvmtn_common owner=root group={{deploy_user}} mode=0440
+  when: dvmtn_deploy_extra_env is defined
+
+- name: "Environment | Update /etc/default/{{item}}"
+  template: src=deploy_env_with_source.j2 dest=/etc/default/{{item.key}} owner=root group={{deploy_user}} mode=0440
+  with_dict: "{{ dvmtn_deploy_extra_env }}"
+  when: dvmtn_deploy_extra_env is defined
+
+- name: Environment | Add environment variables from system config to .profile
+  lineinfile: "dest=/home/{{deploy_user}}/.profile state=present line='[[ -f /etc/default/{{app_name}} ]] && . /etc/default/{{app_name}}'"
+
+
+- name: Environment | Add environment variables from system config to .bash_profile
+  lineinfile: dest=/home/{{deploy_user}}/.bash_profile
+              create=yes
+              owner={{deploy_user}}
+              group={{deploy_user}}
+              mode=0600
+              line='if [ -f /etc/default/{{app_name}} ] ; then source /etc/default/{{app_name}}; fi'
+
+- name: Environment | Ensure environment variables are loaded during non-interactive shells
+  lineinfile: dest=/home/{{deploy_user}}/.bashrc
+              create=yes
+              owner={{deploy_user}}
+              group={{deploy_user}}
+              mode=0644
+              insertbefore=BOF
+              line='if [ -f /etc/default/{{app_name}} ] ; then source /etc/default/{{app_name}}; fi'
+

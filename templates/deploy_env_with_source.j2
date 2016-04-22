@@ -1,0 +1,6 @@
+# {{ ansible_managed }}
+source /etc/default/dvmtn_common
+
+{% for key, value in item.value.items() %}
+export {{ key }}='{{ value }}'
+{% endfor %}
