@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
-source /etc/default/dvmtn_common
+[[ -f /etc/default/dvmtn_shared ]] && source /etc/default/dvmtn_shared
 
 {% for key, value in item.value.items() %}
 export {{ key }}='{{ value }}'
