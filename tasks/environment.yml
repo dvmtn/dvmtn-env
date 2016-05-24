@@ -20,7 +20,7 @@
               owner={{deploy_user}}
               group={{deploy_user}}
               mode=0600
-              line='if [ -f /etc/default/{{item}} ] ; then source /etc/default/{{item}}; fi'
+              line='if [ -f /etc/default/{{item.key}} ] ; then source /etc/default/{{item.key}}; fi'
   with_dict: "{{ dvmtn_app_env }}"
 
 - name: Environment | Ensure environment variables are loaded during non-interactive shells
@@ -30,6 +30,6 @@
               group={{deploy_user}}
               mode=0644
               insertbefore=BOF
-              line='if [ -f /etc/default/{{item}} ] ; then source /etc/default/{{item}}; fi'
+              line='if [ -f /etc/default/{{item.key}} ] ; then source /etc/default/{{item.key}}; fi'
   with_dict: "{{ dvmtn_app_env }}"
 

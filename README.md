@@ -29,19 +29,6 @@ Example Playbook
       - role: dvmtn-env
 
 
-Example single app usage (no shared environment variables)
-----------------------------------------------------------
-
-    app_name: MyApp
-    dvmtn_deploy_env:
-      RAILS_ENV: "qa"
-      SECRET_KEY_BASE: "1234"
-      DATABASE_HOST: localhost
-      DATABASE_PORT: 5432
-
-This will create a single file at `/etc/default/{{app_name}}`
-
-
 Example multi-app usage
 -----------------------
 
