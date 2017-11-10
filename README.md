@@ -10,6 +10,12 @@ There are 2 types of files created:
   2. An optional, single shared script called `dvmtn_shared`. This is sourced by all app scripts. Use it to keep shared config in one place, such as monitoring tool API tokens.
 
 
+Installation
+------------
+
+`$ ansible-galaxy install dvmtn.env`
+
+
 Setup
 -----
 
@@ -26,7 +32,7 @@ Example Playbook
       vars_files:
         - "host_vars/{{ inventory_hostname }}_vault.yml"
       roles:
-      - role: dvmtn-env
+      - role: dvmtn.env
 
 
 Example multi-app usage
@@ -49,3 +55,18 @@ Example multi-app usage
         DATABASE_PASSWORD: "{{ app_2_password }}"
 
 This will create 3 files: `/etc/default/dvmtn_shared`, `/etc/default/app_1` & `/etc/default/app_2`
+
+Requirements
+------------
+
+Tested on ubuntu 14.04 and 16.04 LTS but it should work on other versions that are similar.
+
+Ansible galaxy
+--------------
+
+You can find it on the official ansible galaxy [here](https://galaxy.ansible.com/dvmtn/env/).
+
+License
+-------
+
+MIT
